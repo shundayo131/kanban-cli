@@ -1,5 +1,6 @@
 // command handling logic
 import minimist from 'minimist'
+import { handleInitCommand } from './handlers/index.js'
 
 const argv = minimist(process.argv.slice(2));
 
@@ -9,7 +10,7 @@ const parseArg = () => {
     boolean: ['help', 'version'], // Flags
     string: ['desc'], // Treat as string 
     alias: {
-      d: 'disc',
+      d: 'desc',
       h: 'help',
       v: 'version',
     }
@@ -39,20 +40,28 @@ const processCommand = async (args) => {
   switch (command) {
     // Init 
     case 'init':
-      // call handle Init command 
+      console.log('init case is hit')
+      handleInitCommand();
       break;
 
-    // add
-
+    case 'add':
+      // TODO 
+      break;
 
     // list 
-
+    case 'list':
+      // TODO 
+      break;
 
     // move 
-
+    case 'move':
+      // TODO 
+      break;
 
     // complete 
-
+    case 'complete':
+      // TODO 
+      break;
 
     // delete
 
