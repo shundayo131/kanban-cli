@@ -1,5 +1,6 @@
 // JSON file storage operations 
 
+import { error } from 'console';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -48,9 +49,69 @@ export const init = async () => {
 export const isInitialized = async () => {
   try {
     await fs.access(DATA_DIR);
-    await fs.access(path.json(DATA_DIR, TASKS_FILE));
+    await fs.access(path.join(DATA_DIR, TASKS_FILE));
     return true;
   } catch {
     return false; 
+  }
+}
+
+// Helper function to check if kanban is initialized
+const ensureInitialized = async () => {
+  console.log('ensureInitiated called')
+  try {
+    await fs.access(DATA_DIR);
+    await fs.access(path.join(DATA_DIR, TASKS_FILE));
+  } catch {
+    throw new Error('Kanban board is not initialized. Run "npx kanban init" first.');
+  }
+}
+
+// Read tasks in file 
+const readTasks = async () => {
+  try {
+    const tasksPath = path.join(DATA_DIR, TASKS_FILE);
+    console.log('tasksPath in readTasks: ', tasksPath)
+    const data = await fs.readFile(tasksPath, 'utf-8');
+    return JSON.parse(data);
+  } catch (e) {
+    throw new Error(`Cound not read tasks: ${e.message}`);
+  }
+}
+
+// Write tasks to file 
+const writeTasks = async (tasks) => {
+  try {
+    const tasksPath = path.join(DATA_DIR, TASKS_FILE);
+    await fs.writeFile(tasksPath, JSON.stringify(tasks, null, 2));
+  } catch (e) {
+    throw new Error(`Could not write tasks: ${error.message}`);
+  }
+}
+
+// Add task to task table 
+export const addTask = async (title, description) => {
+  console.log('addTask function is called')
+  try {
+    // Check if kanban is initalized 
+    await ensureInitialized();
+  
+    const tasks = await readTasks();
+  
+    const newTask = {
+      id: generateId(),
+      title,
+      description,
+      state: 'todo',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+  
+    tasks.push(newTask);
+    await writeTasks(tasks);
+
+    return newTask;
+  } catch (e) {
+    throw e;
   }
 }

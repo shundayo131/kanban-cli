@@ -1,6 +1,6 @@
 // command handling logic
 import minimist from 'minimist'
-import { handleInitCommand } from './handlers/index.js'
+import { handleAddCommand, handleInitCommand } from './handlers/index.js'
 import { isInitialized } from './storage.js';
 
 const argv = minimist(process.argv.slice(2));
@@ -46,13 +46,12 @@ const processCommand = async (args) => {
   switch (command) {
     // Init 
     case 'init':
-      console.log('init case is hit')
-      handleInitCommand();
+      await handleInitCommand();
       break;
 
     // Add
     case 'add':
-      // TODO 
+      await handleAddCommand(args);
       break;
 
     // list 
@@ -78,7 +77,6 @@ const processCommand = async (args) => {
     // undefined
       // if already initialized, show all tasks by default 
 
-
       // if not initialized, show help and init instruction 
     
     // default 
@@ -88,7 +86,7 @@ const processCommand = async (args) => {
 
 }
 
-// Main 
+// Main function 
 const main = async () => {
   try {
     const args = parseArg();
@@ -98,7 +96,6 @@ const main = async () => {
     console.error({error: `${e}`}); 
   }
 };
-
 
 // Run the application
 main();
