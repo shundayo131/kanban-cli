@@ -1,6 +1,7 @@
 // command handling logic
 import minimist from 'minimist'
 import { handleInitCommand } from './handlers/index.js'
+import { isInitialized } from './storage.js';
 
 const argv = minimist(process.argv.slice(2));
 
@@ -33,8 +34,13 @@ const processCommand = async (args) => {
     console.log('Calling showVersion to display version')
   }
 
-  // Check if initialized for commands that require it
-  
+  // Rerutn error message if kanban is not initalized AND the command is not init or undefined
+  const initialized = await isInitialized();
+  if (!initialized && command !== 'init' && command !== 'undefined') {
+    console.error('Kanban board has not been initalized.');
+    // TODO: display instruction 
+    return;
+  }
 
   // Process specific commands 
   switch (command) {
@@ -44,6 +50,7 @@ const processCommand = async (args) => {
       handleInitCommand();
       break;
 
+    // Add
     case 'add':
       // TODO 
       break;
@@ -64,7 +71,9 @@ const processCommand = async (args) => {
       break;
 
     // delete
-
+    case 'delete':
+      // TODO 
+      break;
 
     // undefined
       // if already initialized, show all tasks by default 

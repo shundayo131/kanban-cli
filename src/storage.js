@@ -43,3 +43,14 @@ export const init = async () => {
     }; 
   }
 }
+
+// Check if kanban is initialized
+export const isInitialized = async () => {
+  try {
+    await fs.access(DATA_DIR);
+    await fs.access(path.json(DATA_DIR, TASKS_FILE));
+    return true;
+  } catch {
+    return false; 
+  }
+}
