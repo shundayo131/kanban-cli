@@ -1,6 +1,6 @@
 // command handling logic
 import minimist from 'minimist'
-import { handleAddCommand, handleInitCommand } from './handlers/index.js'
+import { handleAddCommand, handleInitCommand, handleListCommand } from './handlers/index.js'
 import { isInitialized } from './storage.js';
 
 const argv = minimist(process.argv.slice(2));
@@ -56,7 +56,7 @@ const processCommand = async (args) => {
 
     // list 
     case 'list':
-      // TODO 
+      await handleListCommand(args);
       break;
 
     // move 

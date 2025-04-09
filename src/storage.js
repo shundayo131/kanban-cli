@@ -91,7 +91,6 @@ const writeTasks = async (tasks) => {
 
 // Add task to task table 
 export const addTask = async (title, description) => {
-  console.log('addTask function is called')
   try {
     // Check if kanban is initalized 
     await ensureInitialized();
@@ -114,4 +113,25 @@ export const addTask = async (title, description) => {
   } catch (e) {
     throw e;
   }
+}
+
+// List tasks per status, optionally with state 
+export const listTasks = async (state = null) => {
+  try {
+    // check if kanban is initialized
+    await ensureInitialized();
+
+    // Get all tasks
+    const tasks = await readTasks();
+
+    // Filter tasks by state 
+    if (state) {
+      console.log('filtering')
+      return tasks.filter(task => task.state === state);
+    }
+
+    return tasks;
+  } catch (e) {
+    throw e;
+  } 
 }
