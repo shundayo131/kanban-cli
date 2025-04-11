@@ -115,7 +115,7 @@ export const addTask = async (title, description) => {
   }
 }
 
-// List tasks per status, optionally with state 
+// List tasks per state, optionally with state 
 export const listTasks = async (state = null) => {
   try {
     // check if kanban is initialized
@@ -134,4 +134,34 @@ export const listTasks = async (state = null) => {
   } catch (e) {
     throw e;
   } 
+}
+
+// Move task state 
+export const moveTask = async (id, state) => {
+  try {
+    // Check if kanban is initalized 
+    await ensureInitialized();
+    
+    // if state is invalid, return error 
+    if (!['todo', 'in_progress', 'done'].includes(state)) {
+      throw new Error('Invalide state. Must be "todo", "in_progress", or "done"');
+    }
+    
+    const tasks = await readTasks();
+    const taskIndex = tasks.findIndex(task => task.id === id);
+  
+    if (taskIndex === -1) {
+      throw new Error(`Task with ID ${id} not found`);
+    }
+  
+    tasks[taskIndex].state = state;
+    tasks[taskIndex].updated_at = new Date().toISOString(); 
+  
+    // Return the task 
+    await writeTasks(tasks);
+
+    return tasks[taskIndex];
+  } catch (e) {
+    throw error;
+  }
 }
