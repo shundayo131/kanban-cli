@@ -9,6 +9,8 @@ import {
   handleDeleteCommand, 
 } from './handlers/index.js'
 import { isInitialized } from './storage.js';
+import { showHelp } from './util/showHelp.js';
+import { showVersion } from './util/version.js';
 
 const argv = minimist(process.argv.slice(2));
 
@@ -31,14 +33,14 @@ const processCommand = async (args) => {
 
   // Handle help and version flags 
   if (args.help) {
-    // TODO: Call showHelp function
-    console.log('Calling showHelp to display help')
+    showHelp();
     return;
   }
 
   if (args.version) {
-    // TODO: Call showVersion function 
-    console.log('Calling showVersion to display version')
+    const version = await showVersion();
+    console.log(`CLI kanban version: ${version}`);
+    return;
   }
 
   // Rerutn error message if kanban is not initalized AND the command is not init or undefined
@@ -82,15 +84,24 @@ const processCommand = async (args) => {
       break;
 
     // undefined
-      // if already initialized, show all tasks by default 
-
-      // if not initialized, show help and init instruction 
+    case undefined:
+      // No command provided
+      if (initialized) {
+        // if already initialized, show all tasks by default 
+        await handleListCommand(args);
+      } else {
+        // if not initialized, show help and init instruction 
+        // TODO: showHelp();
+        // TODO: display instruction
+      }
     
     // default 
+    default:
       // display error and help 
-
+      console.error(`Unknown command: ${command}`);
+      // TODO: showHelp();
+      break;
   }
-
 }
 
 // Main function 

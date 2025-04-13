@@ -1,20 +1,20 @@
 import { addTask } from '../storage.js';
+import { displayTask, displayError } from '../display.js';
 
 export const handleAddCommand = async (args) => {
   const title = args._[1];
   const description = args.desc || '';
 
   if (!title) {
-    // error
-    console.error('Missing task title')
+    displayError('Missing task title')
     // TODO: add explanation message
     return;;
   }
 
   try {
     const task = await addTask(title, description); 
-    console.log(task);
+    displayTask(task);
   } catch (e) {
-    console.error('error: ', e);
+    displayError(e.message);
   }
 }
