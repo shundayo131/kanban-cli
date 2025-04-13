@@ -4,7 +4,7 @@
   "bin": {
     "kanban": "./index.js"
   },
-  "description": "Command-line Kanban board for project task management",
+  "description": "Command-line Kanban board for task management",
   "license": "MIT",
   "author": "Shun Ito",
   "type": "module",
@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "chalk": "^5.4.1",
-    "minimist": "^1.2.8",
-    "yargs": "^17.7.2"
+    "minimist": "^1.2.8"
   }
 }

@@ -8,11 +8,12 @@ export const handleAddCommand = async (args) => {
     // error
     console.error('Missing task title')
     // TODO: add explanation message
-    return;
+    return;;
   }
 
   try {
     const task = await addTask(title, description); 
+    console.log(task);
   } catch (e) {
     console.error('error: ', e);
   }

@@ -58,7 +58,6 @@ export const isInitialized = async () => {
 
 // Helper function to check if kanban is initialized
 const ensureInitialized = async () => {
-  console.log('ensureInitiated called')
   try {
     await fs.access(DATA_DIR);
     await fs.access(path.join(DATA_DIR, TASKS_FILE));
@@ -71,7 +70,6 @@ const ensureInitialized = async () => {
 const readTasks = async () => {
   try {
     const tasksPath = path.join(DATA_DIR, TASKS_FILE);
-    console.log('tasksPath in readTasks: ', tasksPath)
     const data = await fs.readFile(tasksPath, 'utf-8');
     return JSON.parse(data);
   } catch (e) {
@@ -163,5 +161,32 @@ export const moveTask = async (id, state) => {
     return tasks[taskIndex];
   } catch (e) {
     throw error;
+  }
+}
+
+export const completeTask = (id) => {
+  return moveTask(id, 'done');
+}
+
+export const deleteTask = async (id) => {
+  try {
+    // Check if kanban is initialized 
+    await ensureInitialized();
+
+    const tasks = await readTasks();
+    const taskIndex = tasks.findIndex(task => task.id === id);
+
+    if (taskIndex === -1) {
+      throw new Error(`Task with ID ${id} not found`);
+    }
+
+    const deletedTask = tasks[taskIndex];
+    tasks.splice(taskIndex, 1);
+
+    await writeTasks(tasks);
+
+    return deletedTask;
+  } catch (e) {
+    throw e;
   }
 }

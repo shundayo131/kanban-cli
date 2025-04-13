@@ -4,7 +4,9 @@ import {
   handleAddCommand, 
   handleInitCommand, 
   handleListCommand, 
-  handleMoveCommand 
+  handleMoveCommand,
+  handleCompleteCommand,
+  handleDeleteCommand, 
 } from './handlers/index.js'
 import { isInitialized } from './storage.js';
 
@@ -71,12 +73,12 @@ const processCommand = async (args) => {
 
     // complete 
     case 'complete':
-      // TODO 
+      await handleCompleteCommand(args); 
       break;
 
     // delete
     case 'delete':
-      // TODO 
+      await handleDeleteCommand(args);
       break;
 
     // undefined
