@@ -18,7 +18,7 @@ export const displayTask = (task) => {
   console.log(formatTask(task));
   
   if (task.description) {
-    console.log(`  Discription: ${chalk.gray(task.description)}`);
+    console.log(`  Description: ${chalk.gray(task.description)}`);
   }
   
   console.log(`  ${chalk.dim(`Created: ${new Date(task.created_at).toLocaleString()}`)}`);
