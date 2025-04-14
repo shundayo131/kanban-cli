@@ -1,4 +1,3 @@
-// get package version from package json
 import { readFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -11,7 +10,7 @@ const __dirname = path.dirname(__filename);
 // Function to get package version
 export const showVersion = async () => {
   try {
-    // Read package.json from the root directory (one level up from src/)
+    // Read package.json from the root directory (two level up from util/)
     const packagePath = path.join(__dirname, '..', '..', 'package.json');
     const packageJson = await readFile(packagePath, 'utf8');
     const { version } = JSON.parse(packageJson);

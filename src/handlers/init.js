@@ -1,3 +1,4 @@
+import { displaySuccess } from '../display.js';
 import { init } from '../storage.js'
 
 export const handleInitCommand = async () => {
@@ -6,12 +7,13 @@ export const handleInitCommand = async () => {
     const result = await init();
   
     if (result.success) {
-      console.log('You can now add tasks with: ');
-      console.log('npx kanban add "Task title" --desc "Task description"');
+      displaySuccess(result.message);
+      console.log('\nYou can now add tasks with: ');
+      console.log(' npx kanban add "Task title" --desc "Task description"');
     } else {
-      console.log('error', error.message)
+      displayError(result.message);
     }
   } catch (e) {
-    console.log('error', error.message)
+    displayError(e.message);
   }
 }

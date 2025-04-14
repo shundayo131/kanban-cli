@@ -11,6 +11,7 @@ import {
 import { isInitialized } from './storage.js';
 import { showHelp } from './util/showHelp.js';
 import { showVersion } from './util/version.js';
+import { displayError, displayInitInstructions } from './display.js';
 
 const argv = minimist(process.argv.slice(2));
 
@@ -46,8 +47,8 @@ const processCommand = async (args) => {
   // Rerutn error message if kanban is not initalized AND the command is not init or undefined
   const initialized = await isInitialized();
   if (!initialized && command !== 'init' && command !== 'undefined') {
-    console.error('Kanban board has not been initalized.');
-    // TODO: display instruction 
+    displayError('Kanban board has not been initalized.');
+    displayInitInstructions();
     return;
   }
 
@@ -91,15 +92,14 @@ const processCommand = async (args) => {
         await handleListCommand(args);
       } else {
         // if not initialized, show help and init instruction 
-        // TODO: showHelp();
-        // TODO: display instruction
+        showHelp();
+        displayInitInstructions();
       }
     
     // default 
     default:
-      // display error and help 
-      console.error(`Unknown command: ${command}`);
-      // TODO: showHelp();
+      displayError(`Unknown command: ${command}`);
+      showHelp();
       break;
   }
 }
@@ -111,7 +111,7 @@ const main = async () => {
     await processCommand(args);
   } catch (e) {
     // Display error - to be updated 
-    console.error({error: `${e}`}); 
+    displayError({error: `${e}`}); 
   }
 };
 

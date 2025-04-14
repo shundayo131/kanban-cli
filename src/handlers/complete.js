@@ -1,19 +1,20 @@
+import { displayError, displaySuccess, displayTask } from "../display.js";
 import { completeTask } from "../storage.js";
 
 export const handleCompleteCommand = async (args) => {
   const id = args._[1];
   
   if (!id) {
-    console.error('Missing task ID');
+    displayError('Missing task ID');
     console.log('Usage: npx kanban complete <id>');
     return;
   }
 
   try {
     const task = await completeTask(id);
-    console.log(`Task marked as complete`);
-    console.log(task);
+    displaySuccess(`Task marked as complete`);
+    displayTask(task);
   } catch (e) {
-    console.error(e.message);
+    displayError(e.message);
   }
 }

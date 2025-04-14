@@ -31,7 +31,7 @@ export const displayTask = (task) => {
 }
 
 // Display a list of tasks
-const displayTaskList = (tasks, state = null) => {
+export const displayTaskList = (tasks, state = null) => {
   if (tasks.length === 0) {
     if (state) {
       console.log(chalk.dim(`No tasks in ${state} state.`));
