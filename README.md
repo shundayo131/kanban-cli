@@ -1,4 +1,4 @@
-### CLI Kanban
+### Kanban CLI
 
 A simple command line Kanban board for task management. 
 
