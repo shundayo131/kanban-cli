@@ -23,6 +23,13 @@ v0.1 (MVP)
 - Delete tasks
 - Local JSON storage (.kanban/tasks.json)
 
+### Feature backlog 
+
+- Add `edit` command to allow editing task title and description
+- Implement detailed task view with kanban `show <id>` command
+- Add unit and integration tests with Jest
+- Migrate codebase to TypeScript 
+
 ### Usage
 
 ```bash
