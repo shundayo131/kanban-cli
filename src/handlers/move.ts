@@ -1,7 +1,8 @@
 import { moveTask } from "../storage.js";
 import { displayError, displaySuccess, displayTask } from "../display.js";
+import { CommandArgs } from "../types.js";
 
-export const handleMoveCommand = async (args) => {
+export const handleMoveCommand = async (args: CommandArgs): Promise<void> => {
   // Receive task id and state 
   const id = args._[1];
   const state = args._[2];
@@ -29,6 +30,6 @@ export const handleMoveCommand = async (args) => {
     displaySuccess(`Task moved to ${state}`);
     displayTask(task);
   } catch (e) {
-    displayError(e.message);
+    displayError(e instanceof Error ? e.message : String(e));
   }
 }

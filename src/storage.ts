@@ -3,19 +3,19 @@
 import { error } from 'console';
 import fs from 'fs/promises';
 import path from 'path';
+import { Task, TaskState, InitResult } from './types.js';
 
 // Configuration 
 const DATA_DIR = '.kanban';
 const TASKS_FILE = 'tasks.json'
 
 // Generate a random ID for task 
-const generateId = () => {
+const generateId = (): string => {
   return Math.random().toString(36).substring(2, 8);
 }
 
 // Initalize storage 
-export const init = async () => {
-  console.log('init function in storage is called')
+export const init = async (): Promise<InitResult> => {
   try {
     // Check if directory exists, create if not
     try {
@@ -40,13 +40,13 @@ export const init = async () => {
   } catch (e) {
     return { 
       success: false, 
-      message: `Failed to initialize kanban board: ${error.message}`
+      message: `Failed to initialize kanban board: ${e instanceof Error? e.message : String(e)}`
     }; 
   }
 }
 
 // Check if kanban is initialized
-export const isInitialized = async () => {
+export const isInitialized = async (): Promise<boolean> => {
   try {
     await fs.access(DATA_DIR);
     await fs.access(path.join(DATA_DIR, TASKS_FILE));
@@ -57,7 +57,7 @@ export const isInitialized = async () => {
 }
 
 // Helper function to check if kanban is initialized
-const ensureInitialized = async () => {
+const ensureInitialized = async (): Promise<void> => {
   try {
     await fs.access(DATA_DIR);
     await fs.access(path.join(DATA_DIR, TASKS_FILE));
@@ -67,35 +67,35 @@ const ensureInitialized = async () => {
 }
 
 // Read tasks in file 
-const readTasks = async () => {
+const readTasks = async (): Promise<Task[]> => {
   try {
     const tasksPath = path.join(DATA_DIR, TASKS_FILE);
     const data = await fs.readFile(tasksPath, 'utf-8');
     return JSON.parse(data);
   } catch (e) {
-    throw new Error(`Cound not read tasks: ${e.message}`);
+    throw new Error(`Cound not read tasks: ${e instanceof Error ? e.message : String(e)}`);
   }
 }
 
 // Write tasks to file 
-const writeTasks = async (tasks) => {
+const writeTasks = async (tasks: Task[]): Promise<void> => {
   try {
     const tasksPath = path.join(DATA_DIR, TASKS_FILE);
     await fs.writeFile(tasksPath, JSON.stringify(tasks, null, 2));
   } catch (e) {
-    throw new Error(`Could not write tasks: ${error.message}`);
+    throw new Error(`Could not write tasks: ${e instanceof Error ? e.message : String(e)}`);
   }
 }
 
 // Add task to task table 
-export const addTask = async (title, description) => {
+export const addTask = async (title: string, description: string): Promise<Task> => {
   try {
     // Check if kanban is initalized 
     await ensureInitialized();
   
     const tasks = await readTasks();
   
-    const newTask = {
+    const newTask: Task = {
       id: generateId(),
       title,
       description,
@@ -109,12 +109,12 @@ export const addTask = async (title, description) => {
 
     return newTask;
   } catch (e) {
-    throw e;
+    throw new Error(`Could not add task: ${e instanceof Error ? e.message : String(e)}`);
   }
 }
 
 // List tasks per state, optionally with state 
-export const listTasks = async (state = null) => {
+export const listTasks = async (state: string | null = null): Promise<Task[]> => {
   try {
     // check if kanban is initialized
     await ensureInitialized();
@@ -124,18 +124,17 @@ export const listTasks = async (state = null) => {
 
     // Filter tasks by state 
     if (state) {
-      console.log('filtering')
       return tasks.filter(task => task.state === state);
     }
 
     return tasks;
   } catch (e) {
-    throw e;
+    throw new Error(`Could not list tasks: ${e instanceof Error ? e.message : String(e)}`);
   } 
 }
 
 // Move task state 
-export const moveTask = async (id, state) => {
+export const moveTask = async (id: string, state: string): Promise<Task> => {
   try {
     // Check if kanban is initalized 
     await ensureInitialized();
@@ -160,15 +159,15 @@ export const moveTask = async (id, state) => {
 
     return tasks[taskIndex];
   } catch (e) {
-    throw error;
+    throw new Error(`Could not move task: ${e instanceof Error ? e.message : String(e)}`);
   }
 }
 
-export const completeTask = (id) => {
+export const completeTask = (id: string): Promise<Task> => {
   return moveTask(id, 'done');
 }
 
-export const deleteTask = async (id) => {
+export const deleteTask = async (id: string): Promise<Task> => {
   try {
     // Check if kanban is initialized 
     await ensureInitialized();
@@ -187,6 +186,6 @@ export const deleteTask = async (id) => {
 
     return deletedTask;
   } catch (e) {
-    throw e;
+    throw new Error(`Could not delete task: ${e instanceof Error ? e.message : String(e)}`);
   }
 }

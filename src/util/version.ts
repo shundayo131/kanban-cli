@@ -6,9 +6,8 @@ import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 // Function to get package version
-export const showVersion = async () => {
+export const showVersion = async (): Promise<string> => {
   try {
     // Read package.json from the root directory (two level up from util/)
     const packagePath = path.join(__dirname, '..', '..', 'package.json');

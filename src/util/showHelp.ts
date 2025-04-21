@@ -1,5 +1,5 @@
 // Show help message
-export const showHelp = () => {
+export const showHelp = (): void => {
   console.log
   (`
     CLI Kanban - Simple task management for your projects

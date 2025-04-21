@@ -12,11 +12,12 @@ import { isInitialized } from './storage.js';
 import { showHelp } from './util/showHelp.js';
 import { showVersion } from './util/version.js';
 import { displayError, displayInitInstructions } from './display.js';
+import { TaskState, CommandArgs } from './types.js';
 
 const argv = minimist(process.argv.slice(2));
 
 // Parse command line arguments 
-const parseArg = () => {
+const parseArg = (): CommandArgs => {
   return minimist(process.argv.slice(2), {
     boolean: ['help', 'version'], // Flags
     string: ['desc'], // Treat as string 
@@ -25,11 +26,11 @@ const parseArg = () => {
       h: 'help',
       v: 'version',
     }
-  })
+  }) as CommandArgs; 
 }
 
 // Process command 
-const processCommand = async (args) => {
+const processCommand = async (args: CommandArgs): Promise<void> => {
   const command = args._[0];
 
   // Handle help and version flags 
@@ -105,13 +106,13 @@ const processCommand = async (args) => {
 }
 
 // Main function 
-const main = async () => {
+const main = async (): Promise<void> => {
   try {
     const args = parseArg();
     await processCommand(args);
   } catch (e) {
     // Display error - to be updated 
-    displayError({error: `${e}`}); 
+    displayError(`${e instanceof Error ? e.message : String(e)}`); 
   }
 };
 

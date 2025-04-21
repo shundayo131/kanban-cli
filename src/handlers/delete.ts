@@ -1,7 +1,8 @@
 import { displayError, displaySuccess } from "../display.js";
 import { deleteTask } from "../storage.js";
+import { CommandArgs } from '../types.js';
 
-export const handleDeleteCommand = async (args) => {
+export const handleDeleteCommand = async (args: CommandArgs): Promise<void> => {
   const id = args._[1];
   
   if (!id) {
@@ -14,6 +15,6 @@ export const handleDeleteCommand = async (args) => {
     await deleteTask(id);
     displaySuccess('Task deleted successfully');
   } catch (e) {
-    displayError(e.message);
+    displayError(e instanceof Error ? e.message : String(e));
   }  
 }

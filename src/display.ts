@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { Task, TaskState } from './types.js';
 
 // Color mapping for different states
 const stateColors = {
@@ -8,13 +9,13 @@ const stateColors = {
 };
 
 // Format a single task 
-const formatTask = (task) => {
-  const stateColor = stateColors[task.state] || chalk.white;
+const formatTask = (task: Task): string => {
+  const stateColor = stateColors[task.state as keyof typeof stateColors] || chalk.white;
   return `${chalk.bold(task.id)} ${stateColor(`[${task.state}]`)} ${task.title}`;
 }
 
 // Display a single task with details
-export const displayTask = (task) => {
+export const displayTask = (task: Task): void => {
   console.log(formatTask(task));
   
   if (task.description) {
@@ -31,7 +32,7 @@ export const displayTask = (task) => {
 }
 
 // Display a list of tasks
-export const displayTaskList = (tasks, state = null) => {
+export const displayTaskList = (tasks: Task[], state: string | null = null): void => {
   if (tasks.length === 0) {
     if (state) {
       console.log(chalk.dim(`No tasks in ${state} state.`));
@@ -71,7 +72,7 @@ export const displayTaskList = (tasks, state = null) => {
     }
   } else {
     // Display tasks for a specific state
-    const stateColor = stateColors[state] || chalk.white;
+    const stateColor = stateColors[state as keyof typeof stateColors] || chalk.white;
     console.log(`\n${stateColor.bold(`Tasks in ${state} state:`)}`);
     
     tasks.forEach(task => {
@@ -86,17 +87,18 @@ export const displayTaskList = (tasks, state = null) => {
 }
 
 // Display success message
-export const displaySuccess = (message) => {
+export const displaySuccess = (message: string): void => {
   console.log(`${chalk.green('✓')} ${message}`);
 }
 
 // Display error message
-export const displayError = (message) => {
-  console.error(`${chalk.red('✗')} ${message}`);
+export const displayError = (message: string | {error: string}): void => {
+  const errorMessage = typeof message === 'string' ? message : message.error;
+  console.error(`${chalk.red('✗')} ${errorMessage}`);
 }
 
 // Display initialization instructions
-export const displayInitInstructions = () => {
+export const displayInitInstructions = (): void => {
   console.log(`\nTo get started with the kanban board, run:`);
   console.log(`  ${chalk.cyan('npx kanban init')}`);
   console.log(`\nThis will set up a kanban board in your current directory.`);
