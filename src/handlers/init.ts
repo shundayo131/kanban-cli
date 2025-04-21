@@ -1,7 +1,7 @@
-import { displaySuccess } from '../display.js';
-import { init } from '../storage.js'
+import { displaySuccess, displayError } from '../display.js';
+import { init } from '../storage.js';
 
-export const handleInitCommand = async () => {
+export const handleInitCommand = async (): Promise<void> => {
   console.log('handleInitCommand is caled');
   try {
     const result = await init();
@@ -14,6 +14,6 @@ export const handleInitCommand = async () => {
       displayError(result.message);
     }
   } catch (e) {
-    displayError(e.message);
+    displayError(e instanceof Error ? e.message : String(e));
   }
 }

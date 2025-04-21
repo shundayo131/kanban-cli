@@ -1,7 +1,8 @@
 import { listTasks } from '../storage.js';
 import { displayTaskList, displayError } from '../display.js';
+import { CommandArgs } from '../types.js';
 
-export const handleListCommand = async (args) => {
+export const handleListCommand = async (args: CommandArgs): Promise<void> => {
   const state = args._[1];
 
   // If state includes but not 'todo', 'in_progress', or 'done', return display error 
@@ -14,6 +15,6 @@ export const handleListCommand = async (args) => {
     const tasks = await listTasks(state);   
     displayTaskList(tasks, state); 
   } catch (e) {
-    displayError(e.message);
+    displayError(e instanceof Error ? e.message : String(e));
   } 
 }

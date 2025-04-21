@@ -1,7 +1,8 @@
 import { addTask } from '../storage.js';
 import { displayTask, displayError, displaySuccess } from '../display.js';
+import { CommandArgs } from '../types.js';
 
-export const handleAddCommand = async (args) => {
+export const handleAddCommand = async (args: CommandArgs): Promise<void> => {
   const title = args._[1];
   const description = args.desc || '';
   
@@ -16,6 +17,6 @@ export const handleAddCommand = async (args) => {
     displaySuccess('Task added successfully');
     displayTask(task);
   } catch (e) {
-    displayError(e.message);
+    displayError(e instanceof Error ? e.message : String(e));
   }
 }
