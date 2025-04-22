@@ -4,7 +4,7 @@ A simple command line Kanban board for task management.
 
 ### Version 
 
-v0.1 (MVP)
+v0.1.1 (MVP - TypeScript)
 
 ### Tech Stack 
 
@@ -26,13 +26,24 @@ v0.1 (MVP)
 ### Feature backlog 
 
 - Add `edit` command to allow editing task title and description
+- Update `list` command to show description with a table view. 
 - Implement detailed task view with kanban `show <id>` command
 - Add unit and integration tests with Jest
-- Migrate codebase to TypeScript 
+
+### What's new in version 0.1.1
+
+- Codebase migrated from JavaScript to TypeScript
+- Improved type safety with TypeScript interfaces
+- Better error handling
 
 ### Usage
 
 ```bash
+# After installation, use one of these patterns depending on how you installed:
+# - If installed globally: kanban <command>
+# - If using npx: npx kanban-cli <command>
+# - If installed locally: npx kanban <command>
+
 # Initialize
 kanban init
 
@@ -41,14 +52,23 @@ kanban add "Task title" --desc "Optional description"
 
 # List tasks
 kanban list
+kanban list todo
+kanban list in_progress
+kanban list done
 
 # Update tasks
-kanban move abc123 in_progress
-kanban complete xyz789
-kanban delete def456
+kanban move <id> in_progress
+kanban complete <id>
+kanban delete <id>
 
 # Help 
 kanban -help
+kanban -h
+
+# Version
+kanban --version
+kanban -v
+
 ```
 
 ### License 
