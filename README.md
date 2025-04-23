@@ -1,6 +1,6 @@
-### Kanban CLI
+### Kanli
 
-A simple command line Kanban board for task management. 
+Kanli (管理) means 'manage' in Japanese. This is a simple command line Kanban board to manage your programming tasks. 
 
 ### Version 
 

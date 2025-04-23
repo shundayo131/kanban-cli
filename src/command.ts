@@ -41,7 +41,7 @@ const processCommand = async (args: CommandArgs): Promise<void> => {
 
   if (args.version) {
     const version = await showVersion();
-    console.log(`CLI kanban version: ${version}`);
+    console.log(`Kanli version: ${version}`);
     return;
   }
 
