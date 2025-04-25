@@ -2,7 +2,6 @@ import { displaySuccess, displayError } from '../display.js';
 import { init } from '../storage.js';
 
 export const handleInitCommand = async (): Promise<void> => {
-  console.log('handleInitCommand is caled');
   try {
     const result = await init();
   
